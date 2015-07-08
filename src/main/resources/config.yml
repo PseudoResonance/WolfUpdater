@@ -1,0 +1,24 @@
+####################
+#WolfUpdater Config#
+####################
+
+#DO NOT EDIT THIS LINE OR YOUR CONFIG WILL BE RESET!
+Version: 1
+
+#Whether or not the plugin will automatically check for updates.
+AutoCheck: true
+
+#Whether or not the plugin will notify admins that it is updating. (AutoUpdate must be true)
+UpdateNotify: true
+
+#How often (in ticks) will the server check for updates?
+UpdateCheckTime: 432000
+
+#Check for updates on startup?
+CheckOnStartup: true
+
+#What to do upon updating plugins? (Restart, reload or none)
+Action: Reload
+
+#Restart when no players are online?
+RestartNoPlayers: true

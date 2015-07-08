@@ -1,0 +1,18 @@
+name: WolfUpdater
+author: WolfLeader116
+main: io.github.wolfleader116.wolfupdater.WolfUpdater
+version: 0.1
+description: WolfLeader116's WolfUpdater
+commands:
+  wolfupdater:
+    description: Main wolfupdater command.
+permissions:
+  wolfupdater.update:
+    description: Gives the user permission to force update plugins.
+  wolfupdater.notify:
+    description: Users with this permission recieve messages when a plugin is updating.
+  wolfupdater.*:
+    description: Gives the user all WolfUpdater permissions.
+    children:
+      wolfupdater.update: true
+      wolfupdater.notify: true
