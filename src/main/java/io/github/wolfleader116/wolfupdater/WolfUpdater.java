@@ -1,8 +1,6 @@
 package io.github.wolfleader116.wolfupdater;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
@@ -17,7 +15,6 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class WolfUpdater extends JavaPlugin implements Listener {
@@ -78,9 +75,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		File file = new File(Bukkit.getServer().getUpdateFolder() + "/..");
 		try {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/" + plugin.getName() + "/files/target/" + plugin.getName() + ".jar"), file);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -89,9 +84,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		File file = new File(Bukkit.getServer().getUpdateFolder());
 		try {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/WolfUpdater/files/target/WolfUpdater.jar"), file);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -189,7 +182,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 				String ver;
 				try {
 					ver = json.getString("tag_name");
-				} catch (JSONException e) {
+				} catch (Exception e) {
 					ver = "0";
 					e.printStackTrace();
 				}
@@ -245,7 +238,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		String ver;
 		try {
 			ver = json.getString("tag_name");
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			ver = "0";
 			e.printStackTrace();
 		}
