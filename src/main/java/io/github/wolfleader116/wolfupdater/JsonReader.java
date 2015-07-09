@@ -7,6 +7,8 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import org.json.JSONObject;
+
 public class JsonReader {
 
 	private static String readAll(Reader rd) {
@@ -22,13 +24,13 @@ public class JsonReader {
 		return sb.toString();
 	}
 
-	public static org.json.JSONObject readJsonFromUrl(String url) {
+	public static JSONObject readJsonFromUrl(String url) {
 		try {
 			InputStream is = new URL(url).openStream();
 			try {
 				BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 				String jsonText = readAll(rd);
-				org.json.JSONObject json = new org.json.JSONObject(jsonText);
+				JSONObject json = new JSONObject(jsonText);
 				return json;
 			} finally {
 				is.close();
