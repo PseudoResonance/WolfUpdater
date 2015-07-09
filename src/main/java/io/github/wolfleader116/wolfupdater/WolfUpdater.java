@@ -178,7 +178,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		for(int i = 0; i < plugins.length; i++) {
 			if (plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116") && plugins[i].getName() != "WolfUpdater") {
 				String version = plugins[i].getDescription().getVersion();
-				JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/"+ plugins[i].getDescription().getName() + "/releases");
+				JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/"+ plugins[i].getDescription().getName() + "/releases/latest");
 				String ver;
 				try {
 					ver = json.getString("tag_name");
@@ -234,7 +234,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 			}
 		}
 		String version = plugin.getDescription().getVersion();
-		JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/WolfUpdater/releases");
+		JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/WolfUpdater/releases/latest");
 		String ver;
 		try {
 			ver = json.getString("tag_name");
