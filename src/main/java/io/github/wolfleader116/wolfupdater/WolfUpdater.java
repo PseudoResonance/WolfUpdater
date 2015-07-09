@@ -201,7 +201,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		}
 		Plugin[] plugins = Bukkit.getServer().getPluginManager().getPlugins();
 		for(int i = 0; i < plugins.length; i++) {
-			if (plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116") && plugins[i].getDescription().getName() != "WolfUpdater") {
+			if (plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116") && (!(plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116.wolfupdater")))) {
 				String version = plugins[i].getDescription().getVersion();
 				JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/"+ plugins[i].getDescription().getName() + "/releases/latest");
 				String ver;
@@ -211,22 +211,13 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 					ver = "0";
 					e.printStackTrace();
 				}
-				String[] versions = version.split(".");
-				String[] vers = ver.split(".");
 				log.info("Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
 						p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
 					}
 				}
-				try {
-					for (int a = 0; a < vers.length; a++) {
-						if (Integer.valueOf(vers[a]) > Integer.valueOf(versions[a])) {
-							update(plugins[i]);
-							break;
-						}
-					}
-				} catch (ArrayIndexOutOfBoundsException e) {
+				if (!(version.equalsIgnoreCase(ver))) {
 					update(plugins[i]);
 				}
 			}
@@ -240,22 +231,14 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 			ver = "0";
 			e.printStackTrace();
 		}
-		String[] versions = version.split(".");
-		String[] vers = ver.split(".");
 		log.info("Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
 				p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
 			}
 		}
-		try {
-			for (int a = 0; a < vers.length; a++) {
-				if (Integer.valueOf(vers[a]) > Integer.valueOf(versions[a])) {
-					updateSelf();
-					break;
-				}
-			}
-		} catch (ArrayIndexOutOfBoundsException e) {
+
+		if (!(version.equalsIgnoreCase(ver))) {
 			updateSelf();
 		}
 		if (automatic && plugin.getConfig().getBoolean("AutoCheck")) {
