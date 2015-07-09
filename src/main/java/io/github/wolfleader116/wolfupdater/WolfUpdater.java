@@ -2,6 +2,7 @@ package io.github.wolfleader116.wolfupdater;
 
 import java.io.File;
 import java.net.URL;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
@@ -18,6 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.json.JSONObject;
 
 public class WolfUpdater extends JavaPlugin implements Listener {
+
+	private static final Logger log = Logger.getLogger("Minecraft");
 	
 	public static int updatesfound = 0;
 	
@@ -176,7 +179,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		}
 		Plugin[] plugins = Bukkit.getServer().getPluginManager().getPlugins();
 		for(int i = 0; i < plugins.length; i++) {
-			if (plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116") && plugins[i].getName() != "WolfUpdater") {
+			if (plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116") && plugins[i].getDescription().getName() != "WolfUpdater") {
 				String version = plugins[i].getDescription().getVersion();
 				JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/"+ plugins[i].getDescription().getName() + "/releases/latest");
 				String ver;
@@ -188,6 +191,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 				}
 				String[] versions = version.split(".");
 				String[] vers = ver.split(".");
+				log.severe("Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
 				if (vers[0] != null && versions[0] != null && Integer.valueOf(vers[0]) > Integer.valueOf(versions[0])) {
 					update(plugins[i]);
 				} else if (vers[0] != null && versions[0] == null) {
@@ -244,6 +248,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		}
 		String[] versions = version.split(".");
 		String[] vers = ver.split(".");
+		log.severe("Current version of WolfUpdater plugin is " + version + " and found online version is " + ver);
 		if (vers[0] != null && versions[0] != null && Integer.valueOf(vers[0]) > Integer.valueOf(versions[0])) {
 			updateSelf();
 		} else if (vers[0] != null && versions[0] == null) {
