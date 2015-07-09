@@ -191,49 +191,16 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 				}
 				String[] versions = version.split(".");
 				String[] vers = ver.split(".");
-				log.severe("Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
-				if (vers[0] != null && versions[0] != null && Integer.valueOf(vers[0]) > Integer.valueOf(versions[0])) {
-					update(plugins[i]);
-				} else if (vers[0] != null && versions[0] == null) {
-					update(plugins[i]);
-				} else {
-					if (vers[1] != null && versions[1] != null && Integer.valueOf(vers[1]) > Integer.valueOf(versions[1])) {
-						update(plugins[i]);
-					} else if (vers[1] != null && versions[1] == null) {
-						update(plugins[i]);
-					} else {
-						if (vers[2] != null && versions[2] != null && Integer.valueOf(vers[2]) > Integer.valueOf(versions[2])) {
+				log.info("Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
+				try {
+					for (int a = 0; a < vers.length; a++) {
+						if (Integer.valueOf(vers[a]) > Integer.valueOf(versions[a])) {
 							update(plugins[i]);
-						} else if (vers[2] != null && versions[1] == null) {
-							update(plugins[i]);
-						} else {
-							if (vers[3] != null && versions[3] != null && Integer.valueOf(vers[3]) > Integer.valueOf(versions[3])) {
-								update(plugins[i]);
-							} else if (vers[3] != null && versions[3] == null) {
-								update(plugins[i]);
-							} else {
-								if (vers[4] != null && versions[4] != null && Integer.valueOf(vers[4]) > Integer.valueOf(versions[4])) {
-									update(plugins[i]);
-								} else if (vers[4] != null && versions[4] == null) {
-									update(plugins[i]);
-								} else {
-									if (vers[5] != null && versions[5] != null && Integer.valueOf(vers[5]) > Integer.valueOf(versions[5])) {
-										update(plugins[i]);
-									} else if (vers[5] != null && versions[5] == null) {
-										update(plugins[i]);
-									} else {
-										if (vers[6] != null && versions[6] != null && Integer.valueOf(vers[6]) > Integer.valueOf(versions[6])) {
-											update(plugins[i]);
-										} else if (vers[6] != null && versions[6] == null) {
-											update(plugins[i]);
-										} else {
-											update(plugins[i]);
-										}
-									}
-								}
-							}
+							break;
 						}
 					}
+				} catch (ArrayIndexOutOfBoundsException e) {
+					update(plugins[i]);
 				}
 			}
 		}
@@ -248,49 +215,16 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		}
 		String[] versions = version.split(".");
 		String[] vers = ver.split(".");
-		log.severe("Current version of WolfUpdater plugin is " + version + " and found online version is " + ver);
-		if (vers[0] != null && versions[0] != null && Integer.valueOf(vers[0]) > Integer.valueOf(versions[0])) {
-			updateSelf();
-		} else if (vers[0] != null && versions[0] == null) {
-			updateSelf();
-		} else {
-			if (vers[1] != null && versions[1] != null && Integer.valueOf(vers[1]) > Integer.valueOf(versions[1])) {
-				updateSelf();
-			} else if (vers[1] != null && versions[1] == null) {
-				updateSelf();
-			} else {
-				if (vers[2] != null && versions[2] != null && Integer.valueOf(vers[2]) > Integer.valueOf(versions[2])) {
+		log.info("Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
+		try {
+			for (int a = 0; a < vers.length; a++) {
+				if (Integer.valueOf(vers[a]) > Integer.valueOf(versions[a])) {
 					updateSelf();
-				} else if (vers[2] != null && versions[1] == null) {
-					updateSelf();
-				} else {
-					if (vers[3] != null && versions[3] != null && Integer.valueOf(vers[3]) > Integer.valueOf(versions[3])) {
-						updateSelf();
-					} else if (vers[3] != null && versions[3] == null) {
-						updateSelf();
-					} else {
-						if (vers[4] != null && versions[4] != null && Integer.valueOf(vers[4]) > Integer.valueOf(versions[4])) {
-							updateSelf();
-						} else if (vers[4] != null && versions[4] == null) {
-							updateSelf();
-						} else {
-							if (vers[5] != null && versions[5] != null && Integer.valueOf(vers[5]) > Integer.valueOf(versions[5])) {
-								updateSelf();
-							} else if (vers[5] != null && versions[5] == null) {
-								updateSelf();
-							} else {
-								if (vers[6] != null && versions[6] != null && Integer.valueOf(vers[6]) > Integer.valueOf(versions[6])) {
-									updateSelf();
-								} else if (vers[6] != null && versions[6] == null) {
-									updateSelf();
-								} else {
-									updateSelf();
-								}
-							}
-						}
-					}
+					break;
 				}
 			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			updateSelf();
 		}
 		if (automatic && plugin.getConfig().getBoolean("AutoCheck")) {
 			startUpdateCheckLoop();
