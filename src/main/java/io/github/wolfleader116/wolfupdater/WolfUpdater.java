@@ -1,5 +1,7 @@
 package io.github.wolfleader116.wolfupdater;
 
+import io.github.wolfleader116.wolfupdater.commands.WolfUpdaterC;
+
 import java.io.File;
 import java.net.URL;
 import java.util.logging.Logger;
@@ -41,6 +43,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		if (this.getConfig().getBoolean("CheckOnStartup")) {
 			updateCheck(true);
 		}
+		getCommand("WolfUpdater").setExecutor(new WolfUpdaterC());
 	}
 	
 	@Override
@@ -76,19 +79,23 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 	
 	public static void update(Plugin plugin) {
 		File file = new File(Bukkit.getServer().getUpdateFolder() + "/..");
+		log.info("Updating plugin " + plugin.getName());
 		try {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/" + plugin.getName() + "/files/target/" + plugin.getName() + ".jar"), file);
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.info(plugin.getName() + " plugin update failed");
 		}
 	}
 	
 	public static void updateSelf() {
 		File file = new File(Bukkit.getServer().getUpdateFolder());
+		log.info("Updating plugin WolfUpdater");
 		try {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/WolfUpdater/files/target/WolfUpdater.jar"), file);
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.info("WolfUpdater plugin update failed");
 		}
 	}
 	
@@ -133,6 +140,11 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 	
 	public static void updateCheckComplete() {
 		if (plugin.getConfig().getString("Action").equalsIgnoreCase("restart")) {
+			if (updatesfound == 0) {
+				log.info("Server has completed checking for plugin updates. There were no updates found.");
+			} else if (updatesfound > 0) {
+				log.info("Server has completed checking for plugin updates. " + String.valueOf(updatesfound) + " updates were found and downloaded. Server will now restart.");
+			}
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 				if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
 					if (updatesfound == 0) {
@@ -146,6 +158,11 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 				restart(false);
 			}
 		} else if (plugin.getConfig().getString("Action").equalsIgnoreCase("reload")) {
+			if (updatesfound == 0) {
+				log.info("Server has completed checking for plugin updates. There were no updates found.");
+			} else if (updatesfound > 0) {
+				log.info("Server has completed checking for plugin updates. " + String.valueOf(updatesfound) + " updates were found and downloaded. Server will now restart.");
+			}
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 				if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
 					if (updatesfound == 0) {
@@ -159,6 +176,11 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 				reload();
 			}
 		} else if (plugin.getConfig().getString("Action").equalsIgnoreCase("none")) {
+			if (updatesfound == 0) {
+				log.info("Server has completed checking for plugin updates. There were no updates found.");
+			} else if (updatesfound > 0) {
+				log.info("Server has completed checking for plugin updates. " + String.valueOf(updatesfound) + " updates were found and downloaded. Server will now restart.");
+			}
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 				if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
 					if (updatesfound == 0) {
