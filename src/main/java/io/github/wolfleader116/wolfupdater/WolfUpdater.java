@@ -214,6 +214,11 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 				String[] versions = version.split(".");
 				String[] vers = ver.split(".");
 				log.info("Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
+				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+					if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
+						p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
+					}
+				}
 				try {
 					for (int a = 0; a < vers.length; a++) {
 						if (Integer.valueOf(vers[a]) > Integer.valueOf(versions[a])) {
@@ -238,6 +243,11 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		String[] versions = version.split(".");
 		String[] vers = ver.split(".");
 		log.info("Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
+				p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
+			}
+		}
 		try {
 			for (int a = 0; a < vers.length; a++) {
 				if (Integer.valueOf(vers[a]) > Integer.valueOf(versions[a])) {
