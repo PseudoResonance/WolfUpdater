@@ -95,7 +95,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/" + plugin.getName() + "/files/target/" + plugin.getName() + ".jar"), file);
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.info(plugin.getName() + " plugin update failed");
+			log.info(plugin.getName() + " plugin update failed at new file location: " + path + File.separator + plugin.getName() + ".jar");
 		}
 	}
 	
@@ -117,7 +117,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/WolfUpdater/files/target/WolfUpdater.jar"), file);
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.info("WolfUpdater plugin update failed");
+			log.info("WolfUpdater plugin update failed at new file location: " + path + File.separator + "WolfUpdater.jar");
 		}
 	}
 	
