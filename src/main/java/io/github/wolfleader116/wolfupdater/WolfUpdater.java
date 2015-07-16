@@ -3,7 +3,12 @@ package io.github.wolfleader116.wolfupdater;
 import io.github.wolfleader116.wolfupdater.commands.WolfUpdaterC;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
@@ -18,7 +23,12 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.JSONObject;
+import com.google.common.collect.Lists;
+import com.jcabi.github.Coordinates;
+import com.jcabi.github.Github;
+import com.jcabi.github.Release;
+import com.jcabi.github.Repo;
+import com.jcabi.github.RtGithub;
 
 public class WolfUpdater extends JavaPlugin implements Listener {
 
@@ -205,14 +215,27 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		for(int i = 0; i < plugins.length; i++) {
 			if (plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116") && (!(plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116.wolfupdater")))) {
 				String version = plugins[i].getDescription().getVersion();
-				JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/"+ plugins[i].getDescription().getName() + "/releases/latest");
-				String ver;
-				try {
-					ver = json.getString("tag_name");
-				} catch (Exception e) {
-					ver = "0";
-					e.printStackTrace();
+				Github github = new RtGithub("da8a69a3929ae514e0a9e0aaef135901edcbfe9f");
+				Repo repo = github.repos().get(new Coordinates.Simple("WolfLeader116", plugins[i].getName()));
+				Iterable<Release> ireleases = repo.releases().iterate();
+				Map<Integer, String> r = new HashMap<Integer, String>();
+				List<Release> releases = Lists.newArrayList(ireleases);
+				for (Release re : releases) {
+					String aver = "";
+					try {
+						aver = re.json().getString("tag_name");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					r.put(Integer.valueOf(aver.replaceAll(".", "")), aver);
 				}
+				int max = 0;
+				for (Entry<Integer, String> e : r.entrySet()) {
+					if (e.getKey() > max) {
+						max = e.getKey();
+					}
+				}
+				String ver = r.get(max);
 				log.info("Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
@@ -225,14 +248,27 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 			}
 		}
 		String version = plugin.getDescription().getVersion();
-		JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/WolfUpdater/releases/latest");
-		String ver;
-		try {
-			ver = json.getString("tag_name");
-		} catch (Exception e) {
-			ver = "0";
-			e.printStackTrace();
+		Github github = new RtGithub("da8a69a3929ae514e0a9e0aaef135901edcbfe9f");
+		Repo repo = github.repos().get(new Coordinates.Simple("WolfLeader116", "WolfUpdater"));
+		Iterable<Release> ireleases = repo.releases().iterate();
+		Map<Integer, String> r = new HashMap<Integer, String>();
+		List<Release> releases = Lists.newArrayList(ireleases);
+		for (Release re : releases) {
+			String aver = "";
+			try {
+				aver = re.json().getString("tag_name");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			r.put(Integer.valueOf(aver.replaceAll(".", "")), aver);
 		}
+		int max = 0;
+		for (Entry<Integer, String> e : r.entrySet()) {
+			if (e.getKey() > max) {
+				max = e.getKey();
+			}
+		}
+		String ver = r.get(max);
 		log.info("Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
