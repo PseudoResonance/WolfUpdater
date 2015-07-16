@@ -23,6 +23,8 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.json.JSONObject;
+
 import com.google.common.collect.Lists;
 import com.jcabi.github.Coordinates;
 import com.jcabi.github.Github;
@@ -223,7 +225,8 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 				for (Release re : releases) {
 					String aver = "";
 					try {
-						aver = re.json().getString("tag_name");
+						JSONObject json = (JSONObject) re.json();
+						aver = json.getString("tag_name");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -256,7 +259,8 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		for (Release re : releases) {
 			String aver = "";
 			try {
-				aver = re.json().getString("tag_name");
+				JSONObject json = (JSONObject) re.json();
+				aver = json.getString("tag_name");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
