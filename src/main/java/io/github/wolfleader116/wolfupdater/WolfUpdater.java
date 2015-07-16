@@ -95,7 +95,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/" + plugin.getName() + "/files/target/" + plugin.getName() + ".jar"), file);
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.info(plugin.getName() + " plugin update failed at new file location: " + path + File.separator + plugin.getName() + ".jar");
+			log.info(plugin.getName() + " plugin update failed at new file location: " + file.getAbsolutePath());
 		}
 	}
 	
@@ -106,9 +106,17 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		String path = "";
 		for (int i = 0; i++ < folders.length; i++) {
 			if (i == 0) {
-				path = path + folders[i];
+				if (folders[i].equalsIgnoreCase(plugin.getName())) {
+					break;
+				} else {
+					path = folders[i];
+				}
 			} else if (i > 0) {
-				path = path + File.separator + folders[i];
+				if (folders[i].equalsIgnoreCase(plugin.getName())) {
+					break;
+				} else {
+					path = path + File.separator + folders[i];
+				}
 			}
 		}
 		File file = new File(path + File.separator + "WolfUpdater.jar");
@@ -117,7 +125,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/WolfUpdater/files/target/WolfUpdater.jar"), file);
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.info("WolfUpdater plugin update failed at new file location: " + path + File.separator + "WolfUpdater.jar");
+			log.info("WolfUpdater plugin update failed at new file location: " + file.getAbsolutePath());
 		}
 	}
 	
