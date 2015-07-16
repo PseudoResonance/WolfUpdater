@@ -1,7 +1,7 @@
 name: WolfUpdater
 author: WolfLeader116
 main: io.github.wolfleader116.wolfupdater.WolfUpdater
-version: 0.8.9.3
+version: 0.8.9.4
 description: WolfLeader116's WolfUpdater
 commands:
   wolfupdater:
