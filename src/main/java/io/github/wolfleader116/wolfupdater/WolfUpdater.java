@@ -79,7 +79,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 	
 	public static void update(Plugin plugin) {
 		updatesfound++;
-		File file = new File("Plugins" + File.separator + plugin.getName() + ".jar");
+		File file = new File("plugins" + File.separator + plugin.getName() + ".jar");
 		log.info("Updating plugin " + plugin.getName());
 		try {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/" + plugin.getName() + "/files/target/" + plugin.getName() + ".jar"), file);
@@ -91,7 +91,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 	
 	public static void updateSelf() {
 		updatesfound++;
-		File file = new File("Plugins" + File.separator + "WolfUpdater.jar");
+		File file = new File("plugins" + File.separator + "WolfUpdater.jar");
 		log.info("Updating plugin WolfUpdater");
 		try {
 			FileUtils.copyURLToFile(new URL("https://drone.io/github.com/WolfLeader116/WolfUpdater/files/target/WolfUpdater.jar"), file);
