@@ -35,7 +35,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 	public void onEnable() {
 		plugin = this;
 		this.saveDefaultConfig();
-		if (this.getConfig().getInt("Version") != 1) {
+		if (this.getConfig().getInt("Version") != 2) {
 			File config = new File(this.getDataFolder(), "config.yml");
 			config.delete();
 			this.saveDefaultConfig();
@@ -55,7 +55,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 	public void onPlayerLeave(PlayerQuitEvent e) {
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 			public void run() {
-				if (Bukkit.getServer().getOnlinePlayers().size() == 0) {
+				if (Bukkit.getServer().getOnlinePlayers().size() == 0 && restartnoplayers) {
 					restart(true);
 				}
 			}
@@ -74,7 +74,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 			public void run() {
 				updateCheck(true);
 			}
-		}, Long.valueOf(plugin.getConfig().getInt("UpdateCheckTime")));
+		}, Long.valueOf(plugin.getConfig().getInt("UpdateCheckTime")) * 20);
 	}
 	
 	public static void update(Plugin plugin) {
@@ -181,7 +181,7 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 			if (updatesfound == 0) {
 				log.info("Server has completed checking for plugin updates. There were no updates found.");
 			} else if (updatesfound > 0) {
-				log.info("Server has completed checking for plugin updates. " + String.valueOf(updatesfound) + " updates were found and downloaded. Server will now restart.");
+				log.info("Server has completed checking for plugin updates. " + String.valueOf(updatesfound) + " updates were found and downloaded.");
 			}
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 				if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
@@ -219,8 +219,18 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 						p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
 					}
 				}
-				if (!(version.equalsIgnoreCase(ver))) {
+				if (!(version.equalsIgnoreCase(ver)) && WolfUpdater.plugin.getConfig().getBoolean("AutoUpdate")) {
 					update(plugins[i]);
+				} else if (!(version.equalsIgnoreCase(ver)) && !(WolfUpdater.plugin.getConfig().getBoolean("AutoUpdate"))) {
+					if (automatic) {
+						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+							if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
+								p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + plugins[i] + " needs an update! Please run /wolfupdater update to update it.");
+							}
+						}
+					} else {
+						update(plugins[i]);
+					}
 				}
 			}
 		}
