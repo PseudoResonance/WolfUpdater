@@ -21,7 +21,7 @@ UpdateCheckTime: 3600
 CheckOnStartup: true
 
 #What to do upon updating plugins? (Restart, reload or none)
-Action: Restart
+Action: Reload
 
 #Restart when no players are online?
 RestartNoPlayers: true

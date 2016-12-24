@@ -205,58 +205,73 @@ public class WolfUpdater extends JavaPlugin implements Listener {
 		for(int i = 0; i < plugins.length; i++) {
 			if (plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116") && (!(plugins[i].getClass().getCanonicalName().startsWith("io.github.wolfleader116.wolfupdater")))) {
 				String version = plugins[i].getDescription().getVersion();
-				JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/" + plugins[i].getName() + "/releases/latest?access_token=da8a69a3929ae514e0a9e0aaef135901edcbfe9f");
-				String ver;
 				try {
+					JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/" + plugins[i].getName() + "/releases/latest?access_token=da8a69a3929ae514e0a9e0aaef135901edcbfe9f");
+					String ver;
 					ver = json.getString("tag_name");
-				} catch (Exception e) {
-					ver = "0";
-					e.printStackTrace();
-				}
-				log.info("Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
-				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-					if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
-						p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
+					if (ver.equalsIgnoreCase("0")) {
+						ver = version;
 					}
-				}
-				if (!(version.equalsIgnoreCase(ver)) && WolfUpdater.plugin.getConfig().getBoolean("AutoUpdate")) {
-					update(plugins[i]);
-				} else if (!(version.equalsIgnoreCase(ver)) && !(WolfUpdater.plugin.getConfig().getBoolean("AutoUpdate"))) {
-					if (automatic) {
-						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-							if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
-								p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + plugins[i] + " needs an update! Please run /wolfupdater update to update it.");
-							}
+					log.info("Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
+					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+						if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
+							p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "Current version of plugin " + plugins[i].getDescription().getName() + " is " + version + " and found online version is " + ver);
 						}
-					} else {
+					}
+					if ((!(version.equalsIgnoreCase(ver))) && WolfUpdater.plugin.getConfig().getBoolean("AutoUpdate")) {
 						update(plugins[i]);
+					} else if ((!(version.equalsIgnoreCase(ver))) && (!(WolfUpdater.plugin.getConfig().getBoolean("AutoUpdate")))) {
+						if (automatic) {
+							for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+								if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
+									p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + plugins[i] + " needs an update! Please run /wolfupdater update to update it.");
+								}
+							}
+						} else {
+							update(plugins[i]);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					log.info("An error occurred while updating " + plugins[i].getDescription().getName());
+					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+						if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
+							p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "An error occurred while updating " + plugins[i].getDescription().getName());
+						}
 					}
 				}
 			}
 		}
 		String version = plugin.getDescription().getVersion();
-		JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/WolfUpdater/releases/latest?access_token=da8a69a3929ae514e0a9e0aaef135901edcbfe9f");
-		String ver;
 		try {
+			JSONObject json = JsonReader.readJsonFromUrl("https://api.github.com/repos/WolfLeader116/WolfUpdater/releases/latest?access_token=da8a69a3929ae514e0a9e0aaef135901edcbfe9f");
+			String ver;
 			ver = json.getString("tag_name");
+			if (ver.equalsIgnoreCase("0")) {
+				ver = version;
+			}
+			log.info("Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
+			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+				if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
+					p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
+				}
+			}
+			if (!(version.equalsIgnoreCase(ver))) {
+				updateSelf();
+			}
+			if (automatic && plugin.getConfig().getBoolean("AutoCheck")) {
+				startUpdateCheckLoop();
+			}
+			updateCheckComplete();
 		} catch (Exception e) {
-			ver = "0";
 			e.printStackTrace();
-		}
-		log.info("Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
-		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-			if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
-				p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "Current version of plugin WolfUpdater is " + version + " and found online version is " + ver);
+			log.info("An error occurred while updating WolfUpdater!");
+			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+				if (p.isOp() || p.hasPermission("wolfupdater.notify") && plugin.getConfig().getBoolean("UpdateNotify")) {
+					p.sendMessage(ChatColor.BLUE + "WolfUpdater> " + ChatColor.GREEN + "An error occurred while updating WolfUpdater!");
+				}
 			}
 		}
-
-		if (!(version.equalsIgnoreCase(ver))) {
-			updateSelf();
-		}
-		if (automatic && plugin.getConfig().getBoolean("AutoCheck")) {
-			startUpdateCheckLoop();
-		}
-		updateCheckComplete();
 	}
 	
 }
